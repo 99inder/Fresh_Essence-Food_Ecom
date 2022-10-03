@@ -12,12 +12,15 @@ import { actionCreators } from "../state/index";
 
 const Header = () => {
 
+    //firebase stuff
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    //redux actrionCreators
     const dispatch = useDispatch();
     const { getUser } = bindActionCreators(actionCreators, dispatch);
 
+    //get state from reducer
     const { user } = useSelector(state => state.setUserReducer);
 
     const login = async () => {
@@ -39,7 +42,7 @@ const Header = () => {
                 </Link>
                 <div className='flex items-center gap-8'>
                     <ul className="flex items-center gap-8">
-                        <li className='text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>{user ? user.displayName : "Home"}</li>
+                        <li className='text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>Home</li>
                         <li className='text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>Menu</li>
                         <li className='text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>About Us</li>
                         <li className='text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>Service</li>
@@ -52,7 +55,7 @@ const Header = () => {
                         </div>
                     </div>
                     <div className='relative'>
-                        <motion.img whileTap={{ scale: 0.8 }} src={Avatar} alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer' onClick={login} />
+                        <motion.img whileTap={{ scale: 0.8 }} src={user ? user.photoURL : Avatar } alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer' onClick={login} />
                     </div>
                 </div>
             </div>
