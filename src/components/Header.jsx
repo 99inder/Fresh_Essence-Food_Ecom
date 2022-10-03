@@ -28,15 +28,18 @@ const Header = () => {
     //function to execute the login process
     const login = async () => {
 
-        //getting refreshToken and providerData from google login
-        const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider);
+        if (!user) {
 
-        console.log(providerData[0]);
-        //setting "user" state by passing providerData
-        getUser(providerData[0]);
+            //getting refreshToken and providerData from google login
+            const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider);
 
-        //storing user data on local storage as to conserve data on reload 
-        localStorage.setItem("user", JSON.stringify(providerData[0]));
+            console.log(providerData[0]);
+            //setting "user" state by passing providerData
+            getUser(providerData[0]);
+
+            //storing user data on local storage as to conserve data on reload 
+            localStorage.setItem("user", JSON.stringify(providerData[0]));
+        }
 
     }
 
@@ -63,7 +66,7 @@ const Header = () => {
                         </div>
                     </div>
                     <div className='relative'>
-                        <motion.img whileTap={{ scale: 0.8 }} src={user ? user.photoURL : Avatar } alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full' onClick={login} />
+                        <motion.img whileTap={{ scale: 0.8 }} src={user ? user.photoURL : Avatar} alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full' onClick={login} />
                     </div>
                 </div>
             </div>
