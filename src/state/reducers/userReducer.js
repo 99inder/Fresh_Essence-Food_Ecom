@@ -1,4 +1,7 @@
-const initialState = { user: null };
+import { fetchUser } from "../../utils/fetchLocalStorageData";
+const userInfo = fetchUser();
+
+const initialState = { user: userInfo };
 
 const setUserReducer = (state = initialState, action) => {
     console.log(action);

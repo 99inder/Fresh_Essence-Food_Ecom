@@ -4,8 +4,10 @@ import Avatar from "../img/avatar.png"
 import { MdShoppingBasket } from "react-icons/md";
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../firebase.config";
+
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from "../state/index";
@@ -23,12 +25,18 @@ const Header = () => {
     //get state from reducer
     const { user } = useSelector(state => state.setUserReducer);
 
+    //function to execute the login process
     const login = async () => {
 
+        //getting refreshToken and providerData from google login
         const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider);
 
         console.log(providerData[0]);
+        //setting "user" state by passing providerData
         getUser(providerData[0]);
+
+        //storing user data on local storage as to conserve data on reload 
+        localStorage.setItem("user", JSON.stringify(providerData[0]));
 
     }
 
@@ -55,7 +63,7 @@ const Header = () => {
                         </div>
                     </div>
                     <div className='relative'>
-                        <motion.img whileTap={{ scale: 0.8 }} src={user ? user.photoURL : Avatar } alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer' onClick={login} />
+                        <motion.img whileTap={{ scale: 0.8 }} src={user ? user.photoURL : Avatar } alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full' onClick={login} />
                     </div>
                 </div>
             </div>
