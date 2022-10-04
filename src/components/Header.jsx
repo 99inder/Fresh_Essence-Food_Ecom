@@ -20,7 +20,7 @@ const Header = () => {
 
     //redux actrionCreators
     const dispatch = useDispatch();
-    const { getUser } = bindActionCreators(actionCreators, dispatch);
+    const { setUser } = bindActionCreators(actionCreators, dispatch);
 
     //get state from reducer
     const { user } = useSelector(state => state.setUserReducer);
@@ -38,7 +38,7 @@ const Header = () => {
 
             console.log(providerData[0]);
             //setting "user" state by passing providerData
-            getUser(providerData[0]);
+            setUser(providerData[0]);
 
             //storing user data on local storage as to conserve data on reload 
             localStorage.setItem("user", JSON.stringify(providerData[0]));
@@ -49,6 +49,13 @@ const Header = () => {
             setIsMenu(!isMenu);
         }
 
+    }
+
+    // Logout Function
+    const logout = () => {
+        localStorage.clear();
+        setUser(null);
+        setIsMenu(false);
     }
 
     return (
@@ -98,7 +105,7 @@ const Header = () => {
 
                                         <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>2</li>
                                         <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>3</li>
-                                        <li className='flex items-center justify-between mt-2 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>Logout <MdLogout /></li>
+                                        <li className='flex items-center justify-between mt-2 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg' onClick={logout}>Logout <MdLogout className='text text-red-700' /></li>
                                     </ul>
                                 </motion.div>
                             )
@@ -129,18 +136,23 @@ const Header = () => {
                                 exit={{ opacity: 0, scale: 0.6 }}
                                 className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute right-0 top-12'>
 
-                                <ul className='py-2'>
+                                <ul className='flex flex-col gap-2 py-2'>
                                     {
                                         user && user.email === "99.inderpal@gmail.com" && (
-
-                                            <li className='mb-2 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'><Link to={"/createItem"} className="flex items-center justify-between gap-2">New Item <MdAdd /></Link></li>
+                                            <>
+                                                <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'><Link to={"/createItem"} className="flex items-center justify-between gap-2">New Item<MdAdd /></Link></li>
+                                                <hr />
+                                            </>
 
                                         )
                                     }
+                                    <li className='px-4 text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'><Link to={"/"}>Home</Link></li>
+                                    <li className='px-4 text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>Menu</li>
+                                    <li className='px-4 text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>About Us</li>
+                                    <li className='px-4 text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>Service</li>
+                                    <hr />
 
-                                    <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>2</li>
-                                    <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>3</li>
-                                    <li className='flex items-center justify-between mt-2 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>Logout <MdLogout /></li>
+                                    <li className='flex items-center justify-center gap-3 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base font-medium' onClick={logout}>Logout <MdLogout className='text text-red-700' /></li>
                                 </ul>
                             </motion.div>
                         )
