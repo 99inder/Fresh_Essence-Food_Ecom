@@ -103,8 +103,6 @@ const Header = () => {
                                             )
                                         }
 
-                                        <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>2</li>
-                                        <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>3</li>
                                         <li className='flex items-center justify-between mt-2 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg' onClick={logout}>Logout <MdLogout className='text text-red-700' /></li>
                                     </ul>
                                 </motion.div>
@@ -119,11 +117,10 @@ const Header = () => {
 
 
             {/* Mobile View*/}
-            <div className='flex justify-between md:hidden w-full h-full'>
-                <Link to={"/"} className="flex items-center gap-2">
-                    <img src={Logo} alt="Logo" className="w-8 object-cover" />
-                    <p className='text-headingColor text-xl font-bold'>City</p>
-                </Link>
+
+
+            <div className='flex items-center justify-between md:hidden w-full h-full'>
+
                 <div className='relative'>
                     <motion.img whileTap={{ scale: 0.8 }} src={user ? user.photoURL : Avatar} alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full' onClick={login} />
 
@@ -134,7 +131,7 @@ const Header = () => {
                                 initial={{ opacity: 0, scale: 0.6 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.6 }}
-                                className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute right-0 top-12'>
+                                className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute left-0 top-12'>
 
                                 <ul className='flex flex-col gap-2 py-2'>
                                     {
@@ -159,6 +156,23 @@ const Header = () => {
                     }
 
                 </div>
+
+
+                <Link to={"/"} className="flex items-center gap-2">
+                    <img src={Logo} alt="Logo" className="w-8 object-cover" />
+                    <p className='text-headingColor text-xl font-bold'>City</p>
+                </Link>
+
+
+                <div className='relative flex items-center justify-center'>
+                    <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
+                    <div className=" absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg  flex items-center justify-center">
+                        <p className='text-xs text-white font-semibold'>2</p>
+                    </div>
+                </div>
+
+
+
             </div>
         </header>
     )
