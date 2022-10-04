@@ -1,7 +1,7 @@
 import React from 'react'
 import Logo from "../img/logo.png"
 import Avatar from "../img/avatar.png"
-import { MdShoppingBasket } from "react-icons/md";
+import { MdShoppingBasket, MdAdd, MdLogout } from "react-icons/md";
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ const Header = () => {
         if (!user) {
 
             //getting refreshToken and providerData from google login
-            const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider);
+            const { user: { providerData } } = await signInWithPopup(firebaseAuth, provider);
 
             console.log(providerData[0]);
             //setting "user" state by passing providerData
@@ -45,6 +45,8 @@ const Header = () => {
 
     return (
         <header className='w-screen fixed z-50 p-6 px-16'>
+
+
             {/* Desktop and Tablet */}
             <div className='hidden md:flex w-full h-full items-center justify-between'>
                 <Link to={"/"} className="flex items-center gap-2">
@@ -67,6 +69,18 @@ const Header = () => {
                     </div>
                     <div className='relative'>
                         <motion.img whileTap={{ scale: 0.8 }} src={user ? user.photoURL : Avatar} alt="userprofile" className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full' onClick={login} />
+                        <div className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute right-0 top-12'>
+                            <ul className='py-2'>
+
+                                {
+                                    user && user.email === "99.inderpal@gmail.com" && (<li className='flex items-center justify-between gap-2 mb-2 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>New Item <MdAdd /></li>)
+                                }
+
+                                <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>2</li>
+                                <li className='px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>3</li>
+                                <li className='flex items-center justify-between mt-2 px-4 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base rounded-lg'>Logout <MdLogout /></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
