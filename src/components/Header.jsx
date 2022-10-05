@@ -68,7 +68,7 @@ const Header = () => {
                     <img src={Logo} alt="Logo" className="w-8 object-cover" />
                     <p className='text-headingColor text-xl font-bold'>Fresh Essence</p>
                 </Link>
-                <div className='flex items-center gap-8'>
+                <div className='flex items-center gap-12'>
                     <ul className="flex items-center gap-8">
                         <li className='text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'><Link to={"/"}>Home</Link></li>
                         <li className='text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer'>Menu</li>
