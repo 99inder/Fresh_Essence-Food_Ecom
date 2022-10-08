@@ -1,7 +1,7 @@
 import React from 'react';
 import Bike from "../img/delivery.png";
 import heroBg from "../img/heroBg.png"
-import i1 from "../img/i1.png"
+import { heroData } from '../utils/heroData';
 
 const HomeContainer = () => {
     return (
@@ -28,19 +28,23 @@ const HomeContainer = () => {
 
             <div className='flex-1 flex items-center relative'>
 
-                <img className='ml-auto h-420 w-full lg:w-auto lg:h-650' src={heroBg} alt="heroBg" />
+                <img className='ml-auto w-full lg:w-auto h-[540px] md:h-420 lg:h-full' src={heroBg} alt="heroBg" />
 
-                <div className='w-full h-full absolute flex items-center justify-center'>
+                <div className='w-full h-full absolute md:pt-14 top-0 left-0 flex items-center justify-center py-4 lg:px-32 gap-3 md:gap-8 flex-wrap'>
 
-                    <div className="w-190 p-2 bg-cardOverlay backdrop-blur-md flex flex-col items-center rounded-2xl">
-                        <img src={i1} className="w-40 -mt-16" alt="icecream" />
-                        <p className='text-xl font-semibold text-textColor mt-4'>Ice-cream</p>
-                        <p className='text-sm font-semibold text-lighttextGray mt-2 mb-4'>Choco-Strawberry</p>
-                        <p className=' text-sm font-bold text-headingColor'>
-                            <span className="text-xs text-red-600">₹ </span><span className="">249/-</span>
-                        </p>
-                    </div>
-                    
+                    {
+                        heroData && heroData.map(element => (
+                            <div key={element.id} className="mt-[50px] md:mt-0 lg:w-190 lg:h-225 w-[154px] h-[170px] p-2 bg-cardOverlay backdrop-blur-md flex flex-col items-center rounded-2xl drop-shadow-lg">
+                                <img src={element.image} className=" h-24 lg:h-40 -mt-16" alt="icecream" />
+                                <p className='text-base lg:text-xl font-semibold text-textColor mt-4 text-center'>{element.name}</p>
+                                <p className='text-[12px] lg:text-sm font-semibold text-lighttextGray mt-2 mb-4 text-center'>{element.desc}</p>
+                                <p className='text-[12px] lg:text-sm font-bold text-headingColor'>
+                                    <span className="text-xs text-red-600">₹ </span><span className="">{element.price}/-</span>
+                                </p>
+                            </div>
+                        ))
+                    }
+
                 </div>
 
             </div>

@@ -59,7 +59,7 @@ const Header = () => {
     }
 
     return (
-        <header className='w-screen fixed z-50 p-4 px-3 md:p-6 md:px-16'>
+        <header className='w-screen fixed z-50 p-4 px-3 md:p-6 md:px-16 bg-primary'>
 
 
             {/* Desktop and Tablet */}
