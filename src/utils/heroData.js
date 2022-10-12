@@ -32,4 +32,4 @@ export const heroData= [
         desc: "Chilled Coca-Cola",
         price: 49,
     },
-]
+];
