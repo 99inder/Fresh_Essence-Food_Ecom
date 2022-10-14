@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useSelector } from 'react-redux'
-import HomeContainer from './HomeContainer'
+import { HomeContainer, RowContainer } from './index'
 import { motion } from 'framer-motion'
 
 const MainContainer = () => {
@@ -25,17 +25,21 @@ const MainContainer = () => {
 
           <div className='hidden md:flex items-center gap-3'>
             <motion.div whileTap={{ scale: 0.8 }} className="w-8 h-8 flex items-center justify-center rounded-lg bg-orange-300 hover:bg-orange-500 transition-all duration-100 ease-in-out cursor-pointer hover:shadow-lg">
-              <FaChevronLeft className='text-base text-white'/>
+              <FaChevronLeft className='text-base text-white' />
             </motion.div>
             <motion.div whileTap={{ scale: 0.8 }} className="w-8 h-8 flex items-center justify-center rounded-lg bg-orange-300 hover:bg-orange-500 transition-all duration-100 ease-in-out cursor-pointer hover:shadow-lg">
-              <FaChevronRight className='text-base text-white'/>
+              <FaChevronRight className='text-base text-white' />
             </motion.div>
           </div>
         </div>
 
         <br />
 
-        {/* BELOW LINE IS TO BE DELETED */}
+        <RowContainer />
+
+
+        {/* BELOW 2 LINE IS TO BE DELETED */}
+        <br />
         <button onClick={print}>Log Items</button>
       </section>
 
