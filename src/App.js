@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { getAllFoodItems } from './utils/firebaseFunctions';
 
 import { Header, MainContainer, CreateContainer } from './components';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from './state';
+
 
 function App() {
+
+    const dispatch = useDispatch();
+    const {getFoodItems} = bindActionCreators(actionCreators, dispatch);
+
+    const fetchFoodItems = async () => {
+        await getAllFoodItems().then(data => {
+            getFoodItems(data);
+        });
+    }
+
+    useEffect(() => {
+
+        fetchFoodItems();
+
+    }, [])
+
+
     return (
         <AnimatePresence mode="wait">
             <div className="w-screen h-auto flex flex-col bg-primary">

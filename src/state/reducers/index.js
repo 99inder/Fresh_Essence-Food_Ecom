@@ -1,8 +1,10 @@
 import {combineReducers} from "redux";
+import getFoodItemsReducer from "./getFoodItemsReducer";
 import setUserReducer from "./userReducer";
 
 const rootReducer= combineReducers({
-    setUserReducer
+    setUserReducer,
+    getFoodItemsReducer
 })
 
 export default rootReducer;

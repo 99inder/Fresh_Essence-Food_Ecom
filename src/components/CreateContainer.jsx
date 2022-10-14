@@ -5,7 +5,10 @@ import { categories } from "../utils/categories";
 import Loader from "./Loader";
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase.config";
-import { submitItem } from "../utils/firebaseFunctions";
+import { getAllFoodItems, submitItem } from "../utils/firebaseFunctions";
+import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../state";
 
 const CreateContainer = () => {
 	const [title, setTitle] = useState("");
@@ -18,6 +21,11 @@ const CreateContainer = () => {
 	const [msg, setMsg] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 
+
+	const dispatch = useDispatch(); 
+    const {getFoodItems} = bindActionCreators(actionCreators, dispatch);
+
+
 	const uploadImage = (e) => {
 		setIsLoading(true);
 		const imageFile = e.target.files[0];
@@ -27,7 +35,6 @@ const CreateContainer = () => {
 
 		uploadTask.on('state_changed', (snapshot) => {
 			const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-			console.log('Upload is ' + progress + '% done');
 		}, (error) => {
 			console.log(error);
 			setFields(true);
@@ -126,6 +133,7 @@ const CreateContainer = () => {
 				setIsLoading(false);
 			}, 4000);
 		}
+		fetchFoodItems();
 	};
 
 	const clearData = () => {
@@ -135,6 +143,13 @@ const CreateContainer = () => {
 		setCalories("");
 		setPrice("");
 	};
+
+	const fetchFoodItems = async () => {
+        await getAllFoodItems().then(data => {
+            getFoodItems(data);
+        });
+    }
+
 
 	return (
 		<div className="w-full min-h-screen flex items-center justify-center">
@@ -154,7 +169,7 @@ const CreateContainer = () => {
 				{/* Category Selection List Starts Here */}
 				<div className="w-full">
 					<select onChange={(e) => setCategory(e.target.value)} className="outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer">
-						<option value="other" className="bg-white" disabled selected>Select Category</option>
+						<option value="other" className="bg-white" selected disabled >Select Category</option>
 						{categories && categories.map(item => (
 							<option key={item.id} className="text-base border-0 outline-none capitalize bg-white text-headingColor" value={item.urlParamName}>
 								{item.name}
