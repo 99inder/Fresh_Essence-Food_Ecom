@@ -3,6 +3,9 @@ import { MdFastfood, MdCloudUpload, MdDelete, MdFoodBank } from "react-icons/md"
 import { BiRupee } from "react-icons/bi";
 import { categories } from "../utils/categories";
 import Loader from "./Loader";
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../firebase.config";
+import { submitItem } from "../utils/firebaseFunctions";
 
 const CreateContainer = () => {
 	const [title, setTitle] = useState("");
@@ -15,14 +18,128 @@ const CreateContainer = () => {
 	const [msg, setMsg] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const uploadImage = () => { };
-	const deleteImage = () => { };
-	const saveDetails = () => {	};
+	const uploadImage = (e) => {
+		setIsLoading(true);
+		const imageFile = e.target.files[0];
+		console.log(imageFile);
+		const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
+		const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+		uploadTask.on('state_changed', (snapshot) => {
+			const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			console.log('Upload is ' + progress + '% done');
+		}, (error) => {
+			console.log(error);
+			setFields(true);
+			setMsg("Error While Uploading: Try Again!");
+			setAlertStatus('danger');
+			setTimeout(() => {
+				setFields(false);
+				setIsLoading(false);
+			}, 4000);
+		}, () => {
+			getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+				console.log('File available at', downloadURL);
+				setImageAsset(downloadURL);
+				setIsLoading(false);
+				setFields(true);
+				setMsg("Image Uploaded Successfully!");
+				setAlertStatus("success");
+				setTimeout(() => {
+					setFields(false);
+				}, 4000);
+			});
+		}
+		);
+	};
+
+	const deleteImage = (e) => {
+		setIsLoading(true);
+		const deleteRef = ref(storage, imageAsset);
+
+		deleteObject(deleteRef).then(() => {
+
+			setImageAsset(null);
+			setIsLoading(false);
+			setFields(true);
+			setAlertStatus("success");
+			setMsg("Image Deleted Successfully.");
+			setTimeout(() => {
+				setFields(false);
+			}, 4000);
+
+		}).catch((error) => {
+
+			console.log(error);
+			setIsLoading(false);
+			setFields(true);
+			setAlertStatus("dange");
+			setMsg("Some error occured while deleting the image.Please try again!");
+			setTimeout(() => {
+				setFields(false);
+			}, 4000);
+
+		});
+	};
+	const saveDetails = () => {
+		setIsLoading(true);
+
+		try {
+			if ((!title || (!category || category === "Select Category") || !imageAsset || !calories || !price)) {
+				setFields(true);
+				setMsg("Required fields must be filled!");
+				setAlertStatus('danger');
+				setIsLoading(false);
+				setTimeout(() => {
+					setFields(false);
+				}, 4000);
+			}
+			else {
+				const data = {
+					id: Date.now(),
+					title: title,
+					category: category,
+					imageUrl: imageAsset,
+					calories: calories,
+					price: price,
+					qty: 1
+				}
+				submitItem(data);
+
+				setFields(true);
+				setMsg("Data Successfully Submitted.")
+				setAlertStatus('success');
+				setIsLoading(false);
+
+				clearData();
+				setTimeout(() => {
+					setFields(false);
+				}, 4000);
+			}
+		} catch (error) {
+			console.log(error);
+			setFields(true);
+			setMsg("Error While Submitting: Try Again!");
+			setAlertStatus('danger');
+			setTimeout(() => {
+				setFields(false);
+				setIsLoading(false);
+			}, 4000);
+		}
+	};
+
+	const clearData = () => {
+		setTitle("");
+		setCategory(null);
+		setImageAsset(null);
+		setCalories("");
+		setPrice("");
+	};
 
 	return (
 		<div className="w-full min-h-screen flex items-center justify-center">
 			<div className="w-[90%] md:w-[75%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
-				
+
 				{/* bottom line not completed yet */}
 				{fields && <p>No Here</p>}
 
@@ -37,7 +154,7 @@ const CreateContainer = () => {
 				{/* Category Selection List Starts Here */}
 				<div className="w-full">
 					<select onChange={(e) => setCategory(e.target.value)} className="outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer">
-						<option value="other" className="bg-white">Select Category</option>
+						<option value="other" className="bg-white" disabled selected>Select Category</option>
 						{categories && categories.map(item => (
 							<option key={item.id} className="text-base border-0 outline-none capitalize bg-white text-headingColor" value={item.urlParamName}>
 								{item.name}
